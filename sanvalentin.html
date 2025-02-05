@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/flowers.png" type="image/x-icon">
+    <title>San Valentín</title>
+    <style>
+        body {
+            background-color: #f6d5d5;
+            font-family: 'Times New Roman', sans-serif;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('https://www.transparenttextures.com/patterns/heart.png'); /* Fondo de corazones */
+            background-repeat: repeat;
+        }
+        
+        h1 {
+            color: #ea0808;
+            font-size: 5vw;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .message {
+            font-size: 1.5em;
+            margin: 30px 0;
+            padding: 0 10px;
+            color: #333;
+            font-weight: 300;
+            animation: slideIn 2s ease-in-out;
+        }
+
+        .button {
+            padding: 15px 30px;
+            margin: 10px;
+            border: none;
+            border-radius: 25px; /* Bordes redondeados */
+            cursor: pointer;
+            font-size: 1.2em;
+            width: 80%;
+            max-width: 300px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+        .yes {
+            background-color: #28a745; /* Verde San Valentín */
+            color: white;
+        }
+
+        .yes:hover {
+            transform: scale(1.1);
+            background-color: #218838;
+        }
+
+        .no {
+            background-color: #dc3545; /* Rojo San Valentín */
+            color: white;
+            position: absolute;
+            top: 110px; /* Coloca el botón debajo del botón "Sí" */
+            left: 50%;
+            transform: translateX(-50%);
+            transition: left 0.2s, top 0.2s; /* Suaviza el movimiento del botón */
+        }
+
+        .no:hover {
+            transform: scale(1.1);
+            background-color: #c82333;
+        }
+
+        .heart {
+            position: absolute;
+            top: -50px;
+            font-size: 24px;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(100vh);
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            0% {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Media query para pantallas más grandes */
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 4vw;
+            }
+
+            .message {
+                font-size: 1.2em;
+            }
+
+            .button {
+                font-size: 1.2em;
+            }
+        }
+
+        /* Media query para pantallas pequeñas (móviles) */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+                overflow-y: scroll;
+            }
+
+            h1 {
+                font-size: 5vw;
+            }
+
+            .message {
+                font-size: 1.1em;
+                margin: 20px 0;
+            }
+
+            .button {
+                padding: 12px 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <audio autoplay mute id="miAudio">
+        <source src="../HTML/img/Tu Jardín Con Enanitos 🎶✨.mp3" type="audio/mp3">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+    <h1>¿Quieres ser mi San Valentín?</h1>
+    <div class="message">
+        Desde que te conocí, cada día se siente como un sueño. En este San Valentín, me encantaría compartirlo contigo. No puedo dejar de pensar en lo afortunado que me siento al tenerte en mi vida.
+
+        Hoy, en este día tan especial, quiero que sepas cuánto significas para mí. ¿Te gustaría ser mi San Valentín y hacer de este día algo aún más especial? Prometo que, no solo hoy, sino siempre, haré todo lo posible por hacerte sentir tan especial como eres para mí.
+    </div>
+    <button class="button yes" onclick="yesResponse()">¡Sí, si quiero!</button>
+    <button class="button no" onclick="noResponse()" onmouseover="moveButton()">No, gracias</button>
+
+    <div id="confirmMessage" class="hidden">
+        <h2>¡Sabía que ibas a querer!</h2>
+        <h1>Te amo ❤️</h1>
+    </div>
+
+    <script>
+        function yesResponse() {
+            // Crear corazones flotantes
+            for (let i = 0; i < 500; i++) { // Cambia el número para más o menos corazones
+                createHeart();
+            }
+            // Deshabilitar el botón "No"
+            document.querySelector('.no').disabled = true;
+            // Ocultar el botón "No" y mostrar el mensaje de confirmación
+            document.querySelector('.no').classList.add('hidden');
+            document.querySelector('#confirmMessage').classList.remove('hidden');
+        }
+
+        function noResponse() {
+            alert("😢");
+        }
+
+        function moveButton() {
+            // Obtener el tamaño de la ventana
+            const maxX = window.innerWidth - document.querySelector('.no').offsetWidth;
+            const maxY = window.innerHeight - document.querySelector('.no').offsetHeight;
+
+            // Posicionar el botón "No" en una nueva ubicación aleatoria
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+
+            document.querySelector('.no').style.left = randomX + 'px';
+            document.querySelector('.no').style.top = randomY + 'px';
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = '❤️'; // Puedes cambiar el emoji si deseas
+            heart.style.left = Math.random() * 100 + 'vw'; // Posición horizontal aleatoria
+            heart.style.animationDuration = Math.random() * 2 + 3 + 's'; // Duración aleatoria entre 3s y 5s
+            document.body.appendChild(heart);
+
+            // Eliminar el corazón después de que caiga
+            heart.addEventListener('animationend', () => {
+                heart.remove();
+            });
+        }
+    </script>
+</body>
+</html>
